@@ -4,10 +4,12 @@ import edu.learn.spring5recipeapp.domain.Category;
 import edu.learn.spring5recipeapp.domain.UnitOfMeasure;
 import edu.learn.spring5recipeapp.repositories.CategoryRepository;
 import edu.learn.spring5recipeapp.repositories.UnitOfMeasureRepository;
+import edu.learn.spring5recipeapp.service.RecipeService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
@@ -16,15 +18,10 @@ import java.util.Optional;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
 public class IndexController {
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
-
+    private final RecipeService recipeService;
     @RequestMapping({"","/","/index"})
-    public String getIndexPage(){
-        Optional<Category> category = categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> unitOfMeasure = unitOfMeasureRepository.findByDescription("Teaspoon");
-        log.info("Category Id is : "+category.get().getId());
-        log.info("Unit Of Measure Id is : "+unitOfMeasure.get().getId());
+    public String getIndexPage(Model model){
+        model.addAttribute("recipes",recipeService.getRecipes());
         return "index";
     }
 }

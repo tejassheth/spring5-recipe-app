@@ -1,5 +1,6 @@
 package edu.learn.spring5recipeapp.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,4 +24,10 @@ public class Ingredient {
     @ManyToOne
     private Recipe recipe;
 
+    public Ingredient(final String description, final BigDecimal amount, final UnitOfMeasure uom, final Recipe recipe) {
+        this.description = description;
+        this.amount = amount;
+        this.uom = uom;
+        this.recipe = recipe;
+    }
 }

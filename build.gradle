@@ -3,12 +3,40 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 	id "io.freefair.lombok" version "4.1.2"
-
 }
 
 group = 'edu.learn'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+
+sourceSets {
+	intTest {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	intTestImplementation.extendsFrom implementation
+	intTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+task integrationTest(type: Test) {
+	dependsOn 'cleanIntegrationTest'
+	useJUnitPlatform()
+	description = 'Runs integration tests.'
+	group = 'verification'
+	testClassesDirs = sourceSets.intTest.output.classesDirs
+	classpath = sourceSets.intTest.runtimeClasspath
+	reports {
+		junitXml.enabled = false
+		html.enabled = true
+	}
+	shouldRunAfter test
+}
+
+check.dependsOn integrationTest
 
 configurations {
 	developmentOnly
@@ -32,8 +60,12 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	intTestImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 }
 
 test {
+	dependsOn 'cleanTest'
 	useJUnitPlatform()
 }

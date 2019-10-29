@@ -1,6 +1,7 @@
 package edu.learn.spring5recipeapp.repositories;
 
 import edu.learn.spring5recipeapp.domain.UnitOfMeasure;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -25,13 +24,14 @@ class UnitOfMeasureRepositoryTestIT {
 
     @Test
     void findByDescription() {
+        System.out.println("test");
         Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
-        assertEquals("Teaspoon", uomOptional.get().getDescription());
+        Assertions.assertEquals("Teaspoon", uomOptional.get().getDescription());
     }
 
     @Test
     void findByDescriptionCup() {
         Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
-        assertEquals("Cup", uomOptional.get().getDescription());
+        Assertions.assertEquals("Cup", uomOptional.get().getDescription());
     }
 }

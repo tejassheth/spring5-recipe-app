@@ -10,14 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+
 @AllArgsConstructor
 @Service
 @Slf4j
-public class RecipeServiceImpl implements RecipeService{
+public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeCommandToRecipe recipeCommandToRecipe;
     private final RecipeToRecipeCommand recipeToRecipeCommand;
@@ -32,9 +32,9 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public Recipe findById(long id) {
-        Optional<Recipe> recipeOptional=  recipeRepository.findById(id);
-        if(!recipeOptional.isPresent()){
-            throw  new RuntimeException("Recipe Not Found");
+        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+        if (!recipeOptional.isPresent()) {
+            throw new RuntimeException("Recipe Not Found");
         }
         return recipeOptional.get();
     }

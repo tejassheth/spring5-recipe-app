@@ -1,5 +1,7 @@
 package edu.learn.spring5recipeapp.service;
 
+import edu.learn.spring5recipeapp.converters.RecipeCommandToRecipe;
+import edu.learn.spring5recipeapp.converters.RecipeToRecipeCommand;
 import edu.learn.spring5recipeapp.domain.Recipe;
 import edu.learn.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +22,16 @@ class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository,recipeCommandToRecipe,recipeToRecipeCommand);
     }
 
     @Test
@@ -43,7 +51,7 @@ class RecipeServiceImplTest {
     void getRecipeByIdNotFoundTest(){
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class,()->recipeService.findById(5L));
+        assertThrows(RuntimeException.class,()->recipeService.findById(1L));
         verify(recipeRepository,times(1)).findById(anyLong());
         verify(recipeRepository,never()).findAll();
     }

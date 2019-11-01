@@ -3,12 +3,14 @@ package edu.learn.spring5recipeapp.controllers;
 import edu.learn.spring5recipeapp.commands.RecipeCommand;
 import edu.learn.spring5recipeapp.service.RecipeService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class RecipeController {
     private  RecipeService recipeService;
 
@@ -34,5 +36,14 @@ public class RecipeController {
     public String saveOrUpdate(@ModelAttribute RecipeCommand command){
         RecipeCommand saveCommand = recipeService.saveRecipeCommand(command);
         return "redirect:/recipe/"+saveCommand.getId()+"/show";
+    }
+
+    @GetMapping("/recipe/{id}/delete")
+    //@RequestMapping(name = "recipe",method = RequestMethod.POST)
+    public String delete(@PathVariable String id, Model  model ){
+        log.debug("Deleting Id : "+id);
+
+        recipeService.deleteById(Long.valueOf(id));
+        return "redirect:/";
     }
 }

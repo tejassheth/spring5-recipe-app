@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import sun.rmi.runtime.Log;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -66,5 +67,17 @@ class RecipeServiceImplTest {
         Set<Recipe> recipes = recipeService.getRecipes();
         assertEquals(1,recipes.size());
         verify(recipeRepository,times(1)).findAll();
+    }
+    @Test
+    void testDeleteById(){
+        //given
+        Long id= 1L;
+        //when
+        recipeService.deleteById(2L);
+
+        //no "when", since method has void return type
+
+        //then
+        verify(recipeRepository,times(1)).deleteById(anyLong());
     }
 }

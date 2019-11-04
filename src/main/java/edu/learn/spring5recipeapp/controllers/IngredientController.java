@@ -3,8 +3,6 @@ package edu.learn.spring5recipeapp.controllers;
 import edu.learn.spring5recipeapp.commands.IngredientCommand;
 import edu.learn.spring5recipeapp.commands.RecipeCommand;
 import edu.learn.spring5recipeapp.commands.UnitOfMeasureCommand;
-import edu.learn.spring5recipeapp.domain.Ingredient;
-import edu.learn.spring5recipeapp.domain.Recipe;
 import edu.learn.spring5recipeapp.service.IngredientService;
 import edu.learn.spring5recipeapp.service.RecipeService;
 import edu.learn.spring5recipeapp.service.UnitOfMeasureService;

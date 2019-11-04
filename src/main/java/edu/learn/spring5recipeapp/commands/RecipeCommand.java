@@ -1,8 +1,6 @@
 package edu.learn.spring5recipeapp.commands;
 
 import edu.learn.spring5recipeapp.domain.Difficulty;
-import edu.learn.spring5recipeapp.domain.Ingredient;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

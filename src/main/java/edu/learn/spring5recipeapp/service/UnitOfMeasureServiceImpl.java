@@ -2,7 +2,6 @@ package edu.learn.spring5recipeapp.service;
 
 import edu.learn.spring5recipeapp.commands.UnitOfMeasureCommand;
 import edu.learn.spring5recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
-import edu.learn.spring5recipeapp.domain.UnitOfMeasure;
 import edu.learn.spring5recipeapp.repositories.UnitOfMeasureRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

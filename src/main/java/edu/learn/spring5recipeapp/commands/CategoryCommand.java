@@ -1,6 +1,5 @@
 package edu.learn.spring5recipeapp.commands;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

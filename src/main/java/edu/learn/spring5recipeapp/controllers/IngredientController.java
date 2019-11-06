@@ -24,15 +24,15 @@ public class IngredientController {
     private final UnitOfMeasureService unitOfMeasureService;
 
     @GetMapping("/recipe/{recipeId}/ingredients")
-    public String listIngredients(@PathVariable String recipeId, Model model){
+    public String listIngredients(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
-        model.addAttribute("recipe",recipeService.findCommandById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
         return "recipe/ingredient/list";
     }
 
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/show")
     public String showRecipeIngredient(@PathVariable String recipeId,
-                                       @PathVariable String id, Model model){
+                                       @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         return "recipe/ingredient/show";
     }
@@ -40,36 +40,43 @@ public class IngredientController {
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId,
                                          @PathVariable String id,
-                                         Model model){
-        model.addAttribute("ingredient",ingredientService.findRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
-        model.addAttribute("uomList",unitOfMeasureService.listAllUoms());
+                                         Model model) {
+        model.addAttribute("ingredient", ingredientService.findRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
         return "recipe/ingredient/ingredientform";
 
     }
 
     @PostMapping("/recipe/{recipeId}/ingredient")
-    public String saveOrUpdate(@ModelAttribute IngredientCommand command){
+    public String saveOrUpdate(@ModelAttribute IngredientCommand command) {
         IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
-        log.debug("saved recipe id : "+savedCommand.getRecipeId());
-        log.debug("saved Ingredient id : "+savedCommand.getId());
+        log.debug("saved recipe id : " + savedCommand.getRecipeId());
+        log.debug("saved Ingredient id : " + savedCommand.getId());
 
-        return "redirect:/recipe/"+savedCommand.getRecipeId()+"/ingredient/"+savedCommand.getId()+"/show";
+        return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
     }
 
     @GetMapping("/recipe/{recipeId}/ingredient/new")
-    public String newRecipe(@PathVariable String recipeId,Model model){
+    public String newRecipe(@PathVariable String recipeId, Model model) {
         //make sure we have good id value
         RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
         //todo raise exception if null
         //need to return parent id for the hidden form property
         IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setRecipeId(Long.valueOf(recipeId));
-        model.addAttribute("ingredient",ingredientCommand);
+        model.addAttribute("ingredient", ingredientCommand);
 
         //init uom
         ingredientCommand.setUom(new UnitOfMeasureCommand());
 
-        model.addAttribute("uomList",unitOfMeasureService.listAllUoms());
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
         return "recipe/ingredient/ingredientform";
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
+        log.debug("Delete Ingredient from Recipe " + recipeId + " and Ingredient id :-  " + id);
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+        return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }

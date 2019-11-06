@@ -126,6 +126,7 @@ public class IngredientServiceImpl implements IngredientService {
             log.debug("Recipe Id Not found. Id:" + recipeId);
             result = false;
         }
+
         return result;
     }
 }

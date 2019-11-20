@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -85,7 +86,7 @@ class ImageControllerTest {
         when(recipeService.findCommandById(anyLong())).thenReturn(command);
 
         //when
-        MockHttpServletResponse response = mockMvc.perform(get("recipe/1/recipeimage"))
+        MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -93,7 +94,8 @@ class ImageControllerTest {
         byte[] responseBytes= response.getContentAsByteArray();
 
         //then
-        assertEquals(strImg.getBytes(),responseBytes);
+        assertArrayEquals(strImg.getBytes(),responseBytes);
+        assertEquals(strImg.getBytes().length, responseBytes.length);
 
     }
 }

@@ -3,15 +3,20 @@ package edu.learn.spring5recipeapp.controllers;
 import edu.learn.spring5recipeapp.commands.RecipeCommand;
 import edu.learn.spring5recipeapp.service.ImageService;
 import edu.learn.spring5recipeapp.service.RecipeService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -61,5 +66,34 @@ class ImageControllerTest {
                 .andExpect(header().string("Location","/recipe/1/show"));
         //then
         verify(imageService,times(1)).saveImageFile(anyLong(),any());
+    }
+
+    @Test
+    void renderImageFromDB() throws Exception {
+        //given
+        RecipeCommand command = new RecipeCommand();
+        command.setId(1L);
+
+        String strImg= "Face Image Text";
+        int i= 0;
+        Byte[] bytesBoxed = new Byte[strImg.getBytes().length];
+        for(Byte aByte : strImg.getBytes()){
+            bytesBoxed[i++]=aByte;
+        }
+
+        command.setImage(bytesBoxed);
+        when(recipeService.findCommandById(anyLong())).thenReturn(command);
+
+        //when
+        MockHttpServletResponse response = mockMvc.perform(get("recipe/1/recipeimage"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        byte[] responseBytes= response.getContentAsByteArray();
+
+        //then
+        assertEquals(strImg.getBytes(),responseBytes);
+
     }
 }

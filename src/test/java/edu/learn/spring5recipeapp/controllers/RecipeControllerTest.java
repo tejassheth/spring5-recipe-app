@@ -1,6 +1,7 @@
 package edu.learn.spring5recipeapp.controllers;
 
 import edu.learn.spring5recipeapp.commands.RecipeCommand;
+import edu.learn.spring5recipeapp.exceptions.NotFoundException;
 import edu.learn.spring5recipeapp.service.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,13 @@ class RecipeControllerTest {
 
     }
 
+    @Test
+    void testGetRecipeNotFound() throws Exception {
+        when(recipeService.findCommandById(anyLong())).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
     @Test
     void testGetNewRecipeForm() throws Exception {
     mockMvc.perform(get("/recipe/new"))

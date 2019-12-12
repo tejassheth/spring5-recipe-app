@@ -3,6 +3,7 @@ package edu.learn.spring5recipeapp.service;
 import edu.learn.spring5recipeapp.converters.RecipeCommandToRecipe;
 import edu.learn.spring5recipeapp.converters.RecipeToRecipeCommand;
 import edu.learn.spring5recipeapp.domain.Recipe;
+import edu.learn.spring5recipeapp.exceptions.NotFoundException;
 import edu.learn.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,11 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
@@ -52,7 +57,7 @@ class RecipeServiceImplTest {
     void getRecipeByIdNotFoundTest(){
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class,()->recipeService.findById(1L));
+        assertThrows(NotFoundException.class,()->recipeService.findById(1L));
         verify(recipeRepository,times(1)).findById(anyLong());
         verify(recipeRepository,never()).findAll();
     }

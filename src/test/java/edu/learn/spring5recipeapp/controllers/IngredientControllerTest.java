@@ -40,7 +40,9 @@ class IngredientControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         controller = new IngredientController(recipeService, ingredientService,unitOfMeasureService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
@@ -58,6 +60,13 @@ class IngredientControllerTest {
                 .andExpect(model().attributeExists("recipe"));
 
         verify(recipeService, times(1)).findCommandById(anyLong());
+    }
+
+    @Test
+    void testGetIngredientNumberFormatException() throws Exception {
+        mockMvc.perform(get("/recipe/1/ingredient/2asdf/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
     @Test
